@@ -1,0 +1,38 @@
+server:
+  port: 8989
+
+eureka:
+  instance:
+    hostname: localhost
+
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+        - id: company-service
+          uri: lb://company-service
+          predicates:
+            - Path=/company/**
+        - id: userHolding-service
+          uri: lb://userHolding-service
+          predicates:
+            - Path=/holdings/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+
+web:
+  cors:
+    allowed-origins: "http://localhost:4200"
+    allowed-methods: GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD
+    max-age: 3600
+    allowed-headers: "Requestor-Type"
+    exposed-headers: "X-Get-Header"
